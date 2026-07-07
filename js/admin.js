@@ -514,7 +514,17 @@
 
       fetch(API + '/repos/' + OWNER + '/' + REPO, { headers: ghHeaders(pat), cache: 'no-store' })
         .then(function (r) {
-          if (!r.ok) throw new Error('PAT 驗證失敗（HTTP ' + r.status + '）— 確認 token 沒過期、Repository access 有勾 ' + REPO);
+          if (r.status === 401) {
+            throw new Error('token 字串無效（HTTP 401）— 不是過不過期的問題：通常是「沒複製完整」。回 GitHub 重新產生，按複製鈕拿到 github_pat_ 開頭的整串再貼上（前後不能少字、不能多空格）');
+          }
+          if (r.status === 404) {
+            throw new Error('token 摸不到 ludens-card（HTTP 404）— 建立時 Repository access 必須選「Only select repositories」並勾 ludens-card。另外確認你用的是 Fine-grained 頁面建的（settings/personal-access-tokens/new），不是舊版 tokens 頁');
+          }
+          if (!r.ok) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              throw new Error('PAT 驗證失敗 HTTP ' + r.status + (j.message ? '：' + j.message : ''));
+            });
+          }
           return r.json();
         })
         .then(function (repo) {
