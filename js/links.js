@@ -17,7 +17,7 @@ const LINKS = [
   {
     "label": "要吃啥!?大轉盤",
     "sublabel": "解決吃飯選擇困難",
-    "url": "https://github.com/terrgff8/Line-assis-bot",
+    "url": "https://terrgff8.github.io/what-to-eat/",
     "icon": "link",
     "highlight": false
   },
