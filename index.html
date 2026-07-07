@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1A1A1B">
+  <meta name="description" content="YOUR NAME — personal unit. Links and contact.">
+  <title>YOUR NAME — PERSONAL UNIT</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Jost:wght@300;500;600&display=swap" rel="stylesheet">
+
+  <style>html{background:#F2F2F2}</style>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <a class="skip-link" href="#links">SKIP TO LINKS</a>
+
+  <!-- 固定裝飾層 -->
+  <div class="layer-grid" aria-hidden="true"></div>
+  <div class="layer-scanline" aria-hidden="true"></div>
+  <div class="hud-corners" aria-hidden="true">
+    <span class="tl"></span><span class="tr"></span><span class="bl"></span><span class="br"></span>
+  </div>
+
+  <header class="hud-bar">
+    <span class="hud-bar__id">SYS.ID // PERSONAL UNIT</span>
+    <span class="hud-bar__status"><span class="led"></span>ONLINE</span>
+  </header>
+
+  <span class="rail rail--left" aria-hidden="true">LUDENS PROTOCOL // EVA-CLASS INTERFACE</span>
+  <span class="rail rail--right" aria-hidden="true">SAPIENS TO LUDENS // REV 1.0</span>
+
+  <main class="card-column">
+    <section id="identity">
+      <svg class="avatar-frame" viewBox="0 0 132 132" role="img" aria-label="頭像佔位圖">
+        <!-- 八角外框 -->
+        <polygon points="24,4 108,4 128,24 128,108 108,128 24,128 4,108 4,24"
+                 fill="#1A1A1B" stroke="#C5A059" stroke-width="1.5"/>
+        <polygon points="30,12 102,12 120,30 120,102 102,120 30,120 12,102 12,30"
+                 fill="none" stroke="#4A4A4A" stroke-width="0.75" stroke-dasharray="4 3"/>
+        <!-- 姓名縮寫 -->
+        <text x="66" y="79" text-anchor="middle" font-family="Jost, 'Century Gothic', sans-serif"
+              font-size="36" font-weight="600" letter-spacing="4" fill="#F2F2F2">YN</text>
+        <!-- 氧氣藍 LED -->
+        <rect x="62" y="112" width="8" height="3" fill="#00E5FF"/>
+        <!-- 四顆螺絲 -->
+        <g stroke="#C5A059" stroke-width="0.75">
+          <circle cx="24" cy="24" r="4" fill="#2A2A2C"/><line x1="21" y1="24" x2="27" y2="24"/>
+          <circle cx="108" cy="24" r="4" fill="#2A2A2C"/><line x1="105" y1="24" x2="111" y2="24"/>
+          <circle cx="24" cy="108" r="4" fill="#2A2A2C"/><line x1="21" y1="108" x2="27" y2="108"/>
+          <circle cx="108" cy="108" r="4" fill="#2A2A2C"/><line x1="105" y1="108" x2="111" y2="108"/>
+        </g>
+      </svg>
+      <h1 class="name">Your Name</h1>
+      <p class="tagline">Porter / Builder / Creator</p>
+      <p class="bio">這裡是兩句佔位簡介。之後換成你自己的定位描述與想讓訪客記住的一句話。</p>
+    </section>
+
+    <section id="links">
+      <nav aria-label="Links">
+        <ul id="link-list"></ul>
+      </nav>
+      <noscript>
+        <p class="noscript-note">此頁面的連結清單需要 JavaScript 才能顯示。請啟用 JavaScript 後重新整理。</p>
+      </noscript>
+    </section>
+
+    <footer id="spec">
+      <hr class="gold-rule">
+      <p class="spec-notes">REV 1.0 / BUILT 2026 / NO TRACKING</p>
+      <p class="copyright">© 2026 YOUR NAME</p>
+    </footer>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/links.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/motion.js"></script>
+</body>
+</html>

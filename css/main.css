@@ -1,0 +1,346 @@
+/* ==========================================================
+   Ludens 版面／元件／材質／狀態
+   對比硬規則：金色永不當白底文字，只做邊框、規線、裝飾、黑底標籤
+   ========================================================== */
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html { background: var(--c-white); }
+
+body {
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  color: var(--c-black);
+  background: var(--c-white);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 噪點 — inline SVG feTurbulence data URI，極淡 */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-noise);
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- 裝飾層 ---------- */
+
+/* 工程格線：48px 細格 + 每 240px 一條粗線 */
+.layer-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-grid);
+  background-image:
+    repeating-linear-gradient(0deg,  rgba(74, 74, 74, 0.06) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, rgba(74, 74, 74, 0.06) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(0deg,  rgba(74, 74, 74, 0.10) 0 1px, transparent 1px 240px),
+    repeating-linear-gradient(90deg, rgba(74, 74, 74, 0.10) 0 1px, transparent 1px 240px);
+}
+
+/* 氧氣藍掃描條：只由 GSAP 位移，無 GSAP 時由 no-motion 隱藏 */
+.layer-scanline {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 140px;
+  transform: translateY(-160px);
+  pointer-events: none;
+  z-index: var(--z-scanline);
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(0, 229, 255, 0.14) 42%,
+    rgba(0, 229, 255, 0.32) 50%,
+    rgba(0, 229, 255, 0.14) 58%,
+    transparent 100%);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+/* HUD 四角括號 */
+.hud-corners span {
+  position: fixed;
+  width: 26px;
+  height: 26px;
+  z-index: var(--z-corners);
+  pointer-events: none;
+  border: 0 solid var(--c-gold);
+}
+.hud-corners .tl { top: 52px;  left: 14px;  border-top-width: 2px;    border-left-width: 2px;  transform-origin: top left; }
+.hud-corners .tr { top: 52px;  right: 14px; border-top-width: 2px;    border-right-width: 2px; transform-origin: top right; }
+.hud-corners .bl { bottom: 14px; left: 14px;  border-bottom-width: 2px; border-left-width: 2px;  transform-origin: bottom left; }
+.hud-corners .br { bottom: 14px; right: 14px; border-bottom-width: 2px; border-right-width: 2px; transform-origin: bottom right; }
+
+/* ---------- HUD 狀態列（拉絲金屬） ---------- */
+.hud-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 38px;
+  z-index: var(--z-hud-bar);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.05) 45%, transparent 60%),
+    repeating-linear-gradient(90deg, #1A1A1B 0 2px, #202022 2px 4px);
+  border-bottom: 1px solid var(--c-gold);
+  color: var(--c-white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  transform-origin: left center;
+}
+.hud-bar__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--c-blue);
+}
+.led {
+  width: 6px;
+  height: 6px;
+  background: var(--c-blue);
+  box-shadow: 0 0 6px var(--c-blue);
+  animation: led-blink 2.4s infinite;
+}
+@keyframes led-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+/* ---------- 主欄 ---------- */
+.card-column {
+  position: relative;
+  z-index: var(--z-card);
+  width: min(100% - 32px, 440px);
+  margin-inline: auto;
+  padding-top: 86px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* ---------- identity ---------- */
+#identity {
+  text-align: center;
+  padding: 24px 0 40px;
+  perspective: 600px; /* 桌機頭像傾斜用 */
+}
+.avatar-frame {
+  width: 132px;
+  height: 132px;
+  display: block;
+  margin: 0 auto 22px;
+}
+.name {
+  font-size: var(--fs-name);
+  font-weight: 600;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+.tagline {
+  margin-top: 10px;
+  font-size: var(--fs-tag);
+  font-weight: 500;
+  letter-spacing: var(--ls-tag);
+  text-transform: uppercase;
+  color: var(--c-grey);
+  padding-left: var(--ls-tag); /* 平衡尾端字距造成的視覺偏移 */
+}
+.bio {
+  margin: 18px auto 0;
+  max-width: 36ch;
+  color: var(--c-grey);
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+/* ---------- links（碳纖維按鈕） ---------- */
+#link-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-2);
+}
+.link-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 58px;
+  padding: 12px 18px 12px 24px;
+  text-decoration: none;
+  color: var(--c-white);
+  border: 1px solid rgba(197, 160, 89, 0.45);
+  /* 剪影紀律：切掉右上角 */
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  /* 碳纖維：四層 radial-gradient 錯位編織 */
+  background:
+    radial-gradient(circle at 1px 1px, #232325 1px, transparent 1.6px),
+    radial-gradient(circle at 6px 6px, #232325 1px, transparent 1.6px),
+    radial-gradient(circle at 1px 6px, #0E0E0F 1px, transparent 1.6px),
+    radial-gradient(circle at 6px 1px, #0E0E0F 1px, transparent 1.6px),
+    var(--c-black);
+  background-size: 10px 10px, 10px 10px, 10px 10px, 10px 10px, auto;
+  transition: border-color 0.25s;
+}
+/* 左緣 LED 方塊 */
+.link-card::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 6px;
+  height: 6px;
+  background: var(--c-blue);
+  box-shadow: 0 0 5px var(--c-blue);
+}
+/* hover 藍色底線：只動 transform */
+.link-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--c-blue);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+.link-card:hover { border-color: var(--c-gold); }
+.link-card:hover::after { transform: scaleX(1); }
+.link-card:hover::before { animation: led-blink 0.5s infinite; }
+
+.link-card__icon {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--c-gold);
+}
+.link-card__icon svg { width: 100%; height: 100%; }
+.link-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.link-card__label {
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+}
+.link-card__sublabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  color: var(--c-grey-on-black);
+}
+
+/* 金底變體（highlight:true 用；初始無人使用仍必須存在） */
+.link-card.is-highlight {
+  background: linear-gradient(115deg, #B8934E, #D5B169 40%, #C5A059 60%, #A8873F);
+  color: var(--c-black);
+  border-color: var(--c-black);
+}
+.link-card.is-highlight .link-card__icon { color: var(--c-black); }
+.link-card.is-highlight .link-card__sublabel { color: #3A3325; }
+
+/* ---------- spec footer ---------- */
+#spec {
+  margin-top: auto;
+  padding: 72px 0 40px;
+  text-align: center;
+}
+.gold-rule {
+  border: 0;
+  height: 1px;
+  width: 70%;
+  margin: 0 auto 18px;
+  background: linear-gradient(90deg, transparent, var(--c-gold), transparent);
+}
+.spec-notes {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  color: var(--c-grey);
+}
+.copyright {
+  margin-top: 8px;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-caps);
+  color: var(--c-grey);
+}
+
+/* ---------- 共用狀態 ---------- */
+a:focus-visible {
+  outline: 2px solid var(--c-blue);
+  outline-offset: 3px;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: var(--z-skip);
+  background: var(--c-black);
+  color: var(--c-white);
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  letter-spacing: var(--ls-caps);
+  text-decoration: none;
+}
+.skip-link:focus { left: 12px; top: 48px; }
+
+.noscript-note {
+  padding: 16px;
+  border: 1px solid var(--c-gold);
+  color: var(--c-grey);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ---------- 側註記軌（桌機限定） ---------- */
+.rail { display: none; }
+
+/* ---------- 桌機 ---------- */
+@media (min-width: 768px) {
+  .rail {
+    display: block;
+    position: fixed;
+    top: 50%;
+    z-index: var(--z-rail);
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    letter-spacing: var(--ls-micro);
+    color: var(--c-grey);
+    writing-mode: vertical-rl;
+  }
+  .rail--left  { left: 18px;  transform: translateY(-50%) rotate(180deg); }
+  .rail--right { right: 18px; transform: translateY(-50%); }
+
+  /* 保證捲動高度給視差（總頁高 ~150vh） */
+  #spec { padding-top: 42vh; }
+}
+
+/* ---------- reduced motion / no-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .led,
+  .link-card:hover::before { animation: none; }
+  .layer-scanline { display: none; }
+}
+html.no-motion .layer-scanline { display: none; }

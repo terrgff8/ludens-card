@@ -1,0 +1,44 @@
+/* ==========================================================
+   Ludens 設計 tokens — 65-25-10-2 法則
+   白65% 黑25% 金10% 藍2%（藍只給 LED／掃描線／focus，別處禁用）
+   ========================================================== */
+:root {
+  /* 色彩 */
+  --c-white: #F2F2F2;  /* Titanium White — 頁面底色（65%） */
+  --c-black: #1A1A1B;  /* Carbon Black — 面板、按鈕、header（25%） */
+  --c-gold:  #C5A059;  /* Industrial Gold — 邊框、螺絲、規線（10%） */
+  --c-blue:  #00E5FF;  /* Oxygen Blue — LED、掃描線、focus ring（2%） */
+  --c-grey:  #4A4A4A;  /* Steel Grey — 格線、白底次要文字 */
+  --c-grey-on-black: #9A9A9C; /* 黑底上的次要文字（--c-grey 在黑底對比不足） */
+
+  /* 字體 */
+  --font-display: 'Jost', 'Futura', 'Century Gothic', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+
+  /* 字級 */
+  --fs-name: clamp(2rem, 9vw, 3.25rem);
+  --fs-tag: clamp(0.7rem, 2.5vw, 0.85rem);
+  --fs-body: 1rem;
+  --fs-micro: 0.625rem;
+
+  /* 字距 */
+  --ls-tag: 0.45em;
+  --ls-caps: 0.12em;
+  --ls-micro: 0.2em;
+
+  /* 間距 */
+  --sp-1: 8px;
+  --sp-2: 14px;
+  --sp-3: 22px;
+  --sp-4: 40px;
+
+  /* z-index 層 */
+  --z-grid: 0;
+  --z-rail: 5;
+  --z-card: 10;
+  --z-hud-bar: 20;
+  --z-corners: 30;
+  --z-scanline: 40;
+  --z-noise: 50;
+  --z-skip: 100;
+}
