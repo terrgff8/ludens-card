@@ -78,6 +78,23 @@ function renderLinks(list) {
   });
 }
 
+/* 個人資料套用：profile.js 缺失時維持 HTML 靜態值（向後相容） */
+(function applyProfile() {
+  if (typeof PROFILE === 'undefined' || !PROFILE) return;
+  function setText(sel, text) {
+    var el = document.querySelector(sel);
+    if (el && text) el.textContent = text;
+  }
+  setText('.name', PROFILE.name);
+  setText('.tagline', PROFILE.tagline);
+  setText('.bio', PROFILE.bio);
+  setText('.avatar-frame--fallback text', PROFILE.initial);
+  if (PROFILE.name) {
+    document.title = PROFILE.name + ' — PERSONAL UNIT';
+    setText('.copyright', '© 2026 ' + PROFILE.name);
+  }
+})();
+
 renderLinks(LINKS);
 
 /* 頭像快取破壞：每小時換一次查詢串，後台換圖後最慢一小時全端更新 */

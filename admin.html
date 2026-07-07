@@ -39,6 +39,29 @@
       </header>
 
       <section class="panel">
+        <h2 class="panel-title">個人資料</h2>
+        <label class="field">
+          <span>名稱</span>
+          <input id="p-name" type="text">
+        </label>
+        <label class="field">
+          <span>Tagline（名字下面那行大字距標語）</span>
+          <input id="p-tagline" type="text">
+        </label>
+        <label class="field">
+          <span>簡介</span>
+          <textarea id="p-bio" rows="2"></textarea>
+        </label>
+        <label class="field">
+          <span>頭像縮寫（沒傳照片時八角框中間的字，1–2 字）</span>
+          <input id="p-initial" type="text" maxlength="2">
+        </label>
+        <div class="editor-actions">
+          <button id="save-profile-btn" type="button" class="btn-primary">儲存個人資料</button>
+        </div>
+      </section>
+
+      <section class="panel">
         <h2 class="panel-title">大頭貼</h2>
         <div class="avatar-row">
           <img id="avatar-preview" alt="目前頭像" width="96" height="96">

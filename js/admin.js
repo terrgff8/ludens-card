@@ -75,6 +75,21 @@
     return LINKS_HEADER + '\nconst LINKS = ' + JSON.stringify(arr, null, 2) + ';\n';
   }
 
+  /* ---------- profile.js 解析／序列化（同 links 的錨定策略） ---------- */
+  var PROFILE_HEADER = '/* ADMIN-MANAGED. 由後台 admin.html 管理。手動編輯請維持 JSON 格式：鍵要雙引號，結尾必須是 }; 後面不要加任何東西。 */';
+  var PROFILE_DEFAULTS = { name: '', tagline: '', bio: '', initial: '' };
+  function parseProfileFile(text) {
+    var idx = text.indexOf('const PROFILE');
+    if (idx < 0) throw new Error('profile.js 格式異常：找不到 const PROFILE。請用 git 歷史回滾。');
+    var start = text.indexOf('{', idx);
+    var end = text.lastIndexOf('}');
+    if (start < 0 || end <= start) throw new Error('profile.js 格式異常：物件邊界損毀。請用 git 歷史回滾。');
+    return JSON.parse(text.slice(start, end + 1));
+  }
+  function serializeProfileFile(obj) {
+    return PROFILE_HEADER + '\nconst PROFILE = ' + JSON.stringify(obj, null, 2) + ';\n';
+  }
+
   /* ---------- GitHub API ---------- */
   var PAT = null;            // 登入後才有值；登出清空
   var shaCache = {};         // path -> sha
@@ -179,6 +194,7 @@
   window.__admin = {
     deriveKey: deriveKey, encryptPAT: encryptPAT, decryptPAT: decryptPAT,
     parseLinksFile: parseLinksFile, serializeLinksFile: serializeLinksFile,
+    parseProfileFile: parseProfileFile, serializeProfileFile: serializeProfileFile,
     estimateEntropy: estimateEntropy, generatePassword: generatePassword,
     randB64: randB64, textToB64: textToB64, b64ToText: b64ToText
   };
@@ -232,8 +248,9 @@
       }).then(function () {
         loginView.hidden = true;
         editorView.hidden = false;
-        status('登入成功，載入連結中...');
+        status('登入成功，載入資料中...');
         initAvatarPreview();
+        loadProfile();
         return loadLinks();
       }).catch(function (e) {
         if (e.message === 'NOT_SETUP') loginError('尚未設定 — 請先開 setup.html 完成一次性設定');
@@ -255,6 +272,35 @@
       loginBtn.disabled = false;
       loginBtn.textContent = 'ENTER';
       $('login-pass').value = '';
+    });
+
+    /* ----- 個人資料 ----- */
+    function loadProfile() {
+      return ghGetFile(PAT, 'js/profile.js').then(function (f) {
+        var p = f ? parseProfileFile(f.text) : PROFILE_DEFAULTS;   // 舊部署沒這檔 → 空白，儲存時建檔
+        $('p-name').value = p.name || '';
+        $('p-tagline').value = p.tagline || '';
+        $('p-bio').value = p.bio || '';
+        $('p-initial').value = p.initial || '';
+      }).catch(function (e) { status('個人資料載入錯誤：' + e.message); });
+    }
+
+    $('save-profile-btn').addEventListener('click', function () {
+      var profile = {
+        name: $('p-name').value.trim(),
+        tagline: $('p-tagline').value.trim(),
+        bio: $('p-bio').value.trim(),
+        initial: $('p-initial').value.trim()
+      };
+      if (!profile.name) { status('名稱必填'); return; }
+      if (profile.initial.length > 2) { status('頭像縮寫最多 2 個字'); return; }
+      var btn = $('save-profile-btn');
+      btn.disabled = true;
+      status('儲存個人資料中...');
+      ghPutFile(PAT, 'js/profile.js', textToB64(serializeProfileFile(profile)), 'admin: update profile')
+        .then(function () { status('個人資料已儲存 ✓ 正式站 1–10 分鐘生效'); })
+        .catch(function (e) { status('儲存失敗：' + e.message); })
+        .then(function () { btn.disabled = false; });
     });
 
     /* ----- 連結編輯器 ----- */
