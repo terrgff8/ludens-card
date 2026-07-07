@@ -33,6 +33,11 @@ function renderLinks(list) {
       console.warn('[links] 跳過缺少 url 的項目:', item);
       return;
     }
+    // 渲染邊界防禦：只允許 http(s) / mailto / tel，擋 javascript: 等危險 scheme
+    if (!/^(https?:|mailto:|tel:)/i.test(item.url)) {
+      console.warn('[links] 跳過不允許的 URL scheme:', item.url);
+      return;
+    }
 
     const li = document.createElement('li');
     const a = document.createElement('a');
@@ -74,6 +79,12 @@ function renderLinks(list) {
 }
 
 renderLinks(LINKS);
+
+/* 頭像快取破壞：每小時換一次查詢串，後台換圖後最慢一小時全端更新 */
+(function () {
+  const avatarImg = document.querySelector('.avatar-frame--img');
+  if (avatarImg) avatarImg.src = 'assets/avatar.jpg?v=' + Math.floor(Date.now() / 36e5);
+})();
 
 /* GSAP CDN 失效防護：內容照常，只是沒動畫 */
 if (typeof window.gsap === 'undefined') {

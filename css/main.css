@@ -143,6 +143,13 @@ body::after {
   display: block;
   margin: 0 auto 22px;
 }
+/* 上傳的真頭像：自動裁八角形＋金邊（檔案不存在時 onerror 自移除、顯示 SVG 後備） */
+.avatar-frame--img {
+  object-fit: cover;
+  clip-path: polygon(18% 0, 82% 0, 100% 18%, 100% 82%, 82% 100%, 18% 100%, 0 82%, 0 18%);
+  border: 1.5px solid var(--c-gold);
+  background: var(--c-black);
+}
 .name {
   font-size: var(--fs-name);
   font-weight: 600;

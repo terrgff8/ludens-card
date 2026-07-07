@@ -31,10 +31,10 @@
         { y: -160 },
         { y: function () { return window.innerHeight + 160; }, duration: 0.5, ease: 'power1.inOut' },
         0.25)
-      // 頭像顯影
+      // 頭像顯影（不動 clip-path — img 版頭像有八角 polygon，混插值會跳）
       .from('.avatar-frame', {
-        clipPath: 'inset(50% 50% 50% 50%)',
-        scale: 1.04,
+        autoAlpha: 0,
+        scale: 1.06,
         duration: 0.6
       }, 0.35)
       // 姓名 / tagline（字距固定在 CSS，只動 opacity）

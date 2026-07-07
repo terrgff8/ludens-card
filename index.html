@@ -35,7 +35,10 @@
 
   <main class="card-column">
     <section id="identity">
-      <svg class="avatar-frame" viewBox="0 0 132 132" role="img" aria-label="頭像佔位圖">
+      <img class="avatar-frame avatar-frame--img" src="assets/avatar.jpg" alt="頭像"
+           onerror="this.remove()"
+           onload="var f=document.querySelector('.avatar-frame--fallback'); if(f) f.style.display='none';">
+      <svg class="avatar-frame avatar-frame--fallback" viewBox="0 0 132 132" role="img" aria-label="頭像佔位圖">
         <!-- 八角外框 -->
         <polygon points="24,4 108,4 128,24 128,108 108,128 24,128 4,108 4,24"
                  fill="#1A1A1B" stroke="#C5A059" stroke-width="1.5"/>

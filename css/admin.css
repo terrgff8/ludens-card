@@ -1,0 +1,196 @@
+/* ==========================================================
+   後台介面 — Ludens 碳黑面板。無外部字體（CSP 鎖 self）。
+   ========================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+:root {
+  --font-ui: 'Segoe UI', 'Jost', 'Century Gothic', sans-serif;
+  --font-code: 'Consolas', 'IBM Plex Mono', monospace;
+}
+
+html { background: var(--c-white); }
+body {
+  font-family: var(--font-ui);
+  color: var(--c-black);
+  background:
+    repeating-linear-gradient(0deg,  rgba(74,74,74,0.05) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, rgba(74,74,74,0.05) 0 1px, transparent 1px 48px),
+    var(--c-white);
+  min-height: 100vh;
+  padding: 0 16px 48px;
+}
+
+#admin-root, #setup-root {
+  width: min(100%, 720px);
+  margin-inline: auto;
+}
+
+/* ---------- 面板 ---------- */
+.panel {
+  background: var(--c-black);
+  color: var(--c-white);
+  border: 1px solid var(--c-gold);
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  padding: 22px 20px;
+  margin-top: 20px;
+}
+.panel--center {
+  max-width: 380px;
+  margin: 12vh auto 0;
+}
+.panel-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--c-gold);
+  margin-bottom: 4px;
+}
+.panel-sub {
+  font-family: var(--font-code);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  color: #9A9A9C;
+  margin-bottom: 18px;
+}
+
+/* ---------- 欄位 ---------- */
+.field { display: block; margin-bottom: 14px; }
+.field span {
+  display: block;
+  font-family: var(--font-code);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  color: #9A9A9C;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+.field input[type="text"],
+.field input[type="password"],
+.field select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: #0E0E0F;
+  color: var(--c-white);
+  border: 1px solid var(--c-grey);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+}
+.field input:focus-visible, .field select:focus-visible,
+button:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--c-blue);
+  outline-offset: 2px;
+}
+.field--check { display: flex; align-items: center; gap: 8px; }
+.field--check span { margin: 0; }
+.field--check input { width: auto; }
+
+/* ---------- 按鈕 ---------- */
+button {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  padding: 10px 18px;
+  cursor: pointer;
+  border: 1px solid var(--c-gold);
+  background: transparent;
+  color: var(--c-gold);
+}
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary {
+  background: var(--c-gold);
+  color: var(--c-black);
+  font-weight: 600;
+}
+.btn-ghost { border-color: var(--c-grey); color: var(--c-white); }
+.btn-danger { border-color: #B4544B; color: #E08078; }
+
+/* ---------- 訊息 ---------- */
+.msg { font-family: var(--font-code); font-size: 0.8rem; margin-top: 12px; min-height: 1.2em; }
+.msg--err { color: #E08078; }
+.msg--ok { color: var(--c-blue); }
+.hint { font-size: 0.8rem; color: #9A9A9C; margin-top: 12px; line-height: 1.6; }
+.hint a { color: var(--c-blue); }
+
+/* ---------- 編輯器 ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--c-black);
+  border-bottom: 1px solid var(--c-gold);
+  color: var(--c-white);
+  padding: 10px 16px;
+  margin: 0 -16px;
+}
+.topbar-title {
+  font-family: var(--font-code);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+}
+
+.avatar-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+#avatar-preview {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  clip-path: polygon(18% 0, 82% 0, 100% 18%, 100% 82%, 82% 100%, 18% 100%, 0 82%, 0 18%);
+  border: 1.5px solid var(--c-gold);
+  background: #0E0E0F;
+}
+#avatar-none { font-size: 0.85rem; color: #9A9A9C; }
+.avatar-actions { display: flex; flex-direction: column; gap: 10px; }
+.avatar-actions input[type="file"] { color: #9A9A9C; font-size: 0.8rem; }
+
+.card-row {
+  border: 1px solid var(--c-grey);
+  padding: 14px;
+  margin-bottom: 14px;
+  background: #202022;
+}
+.card-tools { display: flex; gap: 8px; margin-top: 6px; }
+.card-tools button { padding: 6px 12px; font-size: 0.75rem; }
+
+.editor-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.statusbar {
+  position: sticky;
+  bottom: 0;
+  background: var(--c-black);
+  border-top: 1px solid var(--c-gold);
+  color: var(--c-blue);
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  padding: 10px 16px;
+  margin: 20px -16px 0;
+  min-height: 2.4em;
+}
+
+/* ---------- setup 專用 ---------- */
+.steps { padding-left: 20px; line-height: 1.9; font-size: 0.9rem; }
+.steps a { color: var(--c-blue); }
+.warn {
+  border: 1px solid #B4544B;
+  color: #E08078;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  margin: 14px 0;
+}
+.entropy { font-family: var(--font-code); font-size: 0.78rem; color: var(--c-blue); min-height: 1.2em; margin: -6px 0 12px; }
+.setup-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+textarea { min-height: 120px; font-family: var(--font-code); font-size: 0.75rem; margin-top: 12px; }
+
+@media (max-width: 480px) {
+  .panel--center { margin-top: 6vh; }
+  .editor-actions { flex-direction: column; }
+}

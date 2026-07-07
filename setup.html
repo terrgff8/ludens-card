@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src https://api.github.com 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="theme-color" content="#1A1A1B">
+  <title>SETUP — LUDENS CARD ADMIN</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="setup-root">
+
+    <section class="panel">
+      <h1 class="panel-title">一次性設定 / SETUP</h1>
+      <p class="panel-sub">// ROTATE ADMIN CREDENTIALS</p>
+
+      <div class="warn">
+        重跑本頁會<strong>覆蓋舊帳密</strong>。每次重跑都必須用一把<strong>新產生的 PAT</strong>，
+        完成後到 GitHub 把舊 PAT 撤銷（Revoke）— 只改密碼、不換 PAT ＝ 沒有換鎖。<br>
+        絕對不要使用曾在任何聊天、訊息、Email 出現過的密碼。
+      </div>
+
+      <h2 class="panel-title">STEP 1 — 建立 GitHub 金鑰（PAT）</h2>
+      <ol class="steps">
+        <li>開 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">github.com/settings/personal-access-tokens/new</a>（Fine-grained token）</li>
+        <li>Token name 隨意（例 <code>ludens-admin</code>）；Expiration 選 1 年</li>
+        <li>Repository access → <strong>Only select repositories</strong> → 只勾 <strong>ludens-card</strong></li>
+        <li>Permissions → Repository permissions → <strong>Contents → Read and write</strong>（其他全部不動）</li>
+        <li>Generate token → 複製整串貼到下面</li>
+      </ol>
+
+      <div id="setup-form">
+        <h2 class="panel-title">STEP 2 — 設定帳密並加密</h2>
+        <label class="field">
+          <span>GitHub PAT（只在你的瀏覽器使用，不會出現在網站程式碼）</span>
+          <input id="setup-pat" type="password" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>帳號</span>
+          <input id="setup-user" type="text" autocapitalize="none" autocomplete="off">
+        </label>
+        <label class="field">
+          <span>密碼（至少 12 字、強度 ≥70 bits）</span>
+          <input id="setup-pass" type="password" autocomplete="new-password">
+        </label>
+        <p id="entropy-line" class="entropy"></p>
+        <label class="field">
+          <span>再輸入一次密碼</span>
+          <input id="setup-pass2" type="password" autocomplete="new-password">
+        </label>
+        <div class="setup-actions">
+          <button id="gen-pass-btn" type="button" class="btn-ghost">產生隨機密碼（推薦）</button>
+          <button id="setup-write-btn" type="button" class="btn-primary">加密並寫入網站</button>
+          <button id="setup-print-btn" type="button" class="btn-ghost">只產生內容</button>
+        </div>
+        <p id="setup-msg" class="msg"></p>
+        <textarea id="setup-output" hidden readonly></textarea>
+        <p class="hint">「產生隨機密碼」用的是瀏覽器密碼學亂數（約 117 bits）。產生後<strong>立刻抄進密碼管理器</strong> — 忘了密碼只能重跑本頁換新 PAT。</p>
+      </div>
+
+      <div id="setup-done" hidden>
+        <h2 class="panel-title">完成 ✓</h2>
+        <ol class="steps">
+          <li>前往 <a href="admin.html">admin.html</a> 用剛設的帳密登入</li>
+          <li>如果這不是第一次設定：到 <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener noreferrer">PAT 管理頁</a> 把<strong>舊的</strong> token Revoke</li>
+        </ol>
+      </div>
+    </section>
+
+  </div>
+  <script src="js/admin.js"></script>
+</body>
+</html>

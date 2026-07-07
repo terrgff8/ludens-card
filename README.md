@@ -3,9 +3,19 @@
 Linktree 式個人名片＋落地頁。純靜態 HTML/CSS/JS，無框架、無建置步驟。
 視覺：Ludens（Kojima Productions）工程美學 — 鈦白 65 / 碳黑 25 / 工業金 10 / 氧氣藍 2。
 
-## 新增／修改連結
+## 後台（免 git 直接改）
 
-只需要編輯 **`js/links.js`** 一個檔案。複製一個物件、改內容、存檔即可：
+- 後台網址：`https://terrgff8.github.io/ludens-card/admin.html`
+- 首次設定：開 `https://terrgff8.github.io/ludens-card/setup.html`，照頁面步驟建 fine-grained PAT（只限本 repo、只有 Contents 讀寫）→ 設帳密 → 加密寫入
+- 登入後可：上傳大頭貼、編輯／新增／刪除／排序所有連結
+- 修改生效時間：1–10 分鐘（GitHub Pages 建置＋CDN 快取），手機請重新整理
+- **換密碼／疑似外洩**：重跑 setup.html 並**貼一把新 PAT**，完成後到 GitHub 撤銷舊 PAT — 只改密碼不換 PAT 等於沒換鎖（舊加密檔永遠留在 git 歷史）
+- PAT 到期：同上，重跑 setup.html
+- 安全模型：`auth.json` 是公開的加密檔，防線在密碼強度 — 用 setup 頁產生的隨機密碼（約 117 bits）最穩
+
+## 新增／修改連結（手動方式）
+
+也可以直接編輯 **`js/links.js`**（注意：後台管理格式，鍵要雙引號）。複製一個物件、改內容、存檔即可：
 
 ```js
 {
